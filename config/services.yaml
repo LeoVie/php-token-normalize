@@ -3,5 +3,4 @@ parameters:
 
 services:
   LeoVie\PhpTokenNormalize\Service\TokenSequenceNormalizer:
-    arguments: [ !tagged_iterator { tag: 'app.token_normalizer' } ]
     public: true
