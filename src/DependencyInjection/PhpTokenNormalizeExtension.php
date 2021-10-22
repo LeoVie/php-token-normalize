@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LeoVie\PhpTokenNormalize\DependencyInjection;
 
-use LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
