@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace LeoVie\PhpTokenNormalize\Service;
 
+use LeoVie\PhpTokenNormalize\Exception\NoMatchingTokenNormalizerFound;
 use LeoVie\PhpTokenNormalize\Model\TokenSequence;
-use LeoVie\PhpTokenNormalize\TokenNormalizer\NothingToNormalizeNormalizer;
 use LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer;
 use PhpToken;
+use Safe\Exceptions\StringsException;
 
 class TokenSequenceNormalizer
 {
     /** @param iterable<TokenNormalizer> $tokenNormalizers */
     public function __construct(
-        private iterable                     $tokenNormalizers,
-        private NothingToNormalizeNormalizer $nothingToNormalizeNormalizer,
+        private iterable $tokenNormalizers,
     )
     {
     }
@@ -45,6 +45,10 @@ class TokenSequenceNormalizer
         );
     }
 
+    /**
+     * @throws NoMatchingTokenNormalizerFound
+     * @throws StringsException
+     */
     private function findMatchingTokenNormalizer(PhpToken $token): TokenNormalizer
     {
         foreach ($this->tokenNormalizers as $tokenNormalizer) {
@@ -53,6 +57,9 @@ class TokenSequenceNormalizer
             }
         }
 
-        return $this->nothingToNormalizeNormalizer;
+        /** @var string $tokenName */
+        $tokenName = $token->getTokenName();
+
+        throw NoMatchingTokenNormalizerFound::create($tokenName);
     }
 }

@@ -19,8 +19,7 @@ class TokenSequenceNormalizerTest extends TestCase
     public function testNormalizeLevel1(TokenSequence $expected, TokenSequence $tokenSequence): void
     {
         self::assertEquals($expected, (new TokenSequenceNormalizer(
-            $this->createMock(Iterator::class),
-            $this->createMock(NothingToNormalizeNormalizer::class))
+            $this->createMock(Iterator::class))
         )->normalizeLevel1($tokenSequence));
     }
 
@@ -60,9 +59,9 @@ class TokenSequenceNormalizerTest extends TestCase
         $nothingToNormalizeNormalizer->method('supports')->willReturnCallback(fn(PhpToken $token): bool => true);
         $nothingToNormalizeNormalizer->method('normalizeToken')->willReturnCallback(fn(PhpToken $token) => new PhpToken($token->id, 'NOT_NORMALIZED_' . $token->text));
 
-        $tokenNormalizers = new ArrayIterator([$variableNormalizer, $lNumberNormalizer]);
+        $tokenNormalizers = new ArrayIterator([$variableNormalizer, $lNumberNormalizer, $nothingToNormalizeNormalizer]);
 
-        self::assertEquals($expected, (new TokenSequenceNormalizer($tokenNormalizers, $nothingToNormalizeNormalizer))->normalizeLevel2($tokenSequence));
+        self::assertEquals($expected, (new TokenSequenceNormalizer($tokenNormalizers))->normalizeLevel2($tokenSequence));
     }
 
     public function normalizeLevel2Provider(): array
