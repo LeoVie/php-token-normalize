@@ -20,10 +20,10 @@ class PhpTokenNormalizeExtension extends Extension
     {
         $configDir = new FileLocator(__DIR__ . '/../../config/');
 
-        $loader = new YamlFileLoader($container, $configDir);
-        $loader->load('services.yaml');
-
         $container->registerForAutoconfiguration(TokenNormalizer::class)
             ->addTag('app.token_normalizer');
+
+        $loader = new YamlFileLoader($container, $configDir);
+        $loader->load('services.yaml');
     }
 }
