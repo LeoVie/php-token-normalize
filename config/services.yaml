@@ -9,7 +9,7 @@ services:
     arguments: [ !tagged_iterator { tag: 'app.token_normalizer' } ]
 
   LeoVie\PhpTokenNormalize\TokenNormalizer\NothingToNormalizeNormalizer:
-    autowire: true
+    public: true
 
   app.phptokennormalize.tokennormalizer:
     alias: LeoVie\PhpTokenNormalize\Service\TokenSequenceNormalizer
