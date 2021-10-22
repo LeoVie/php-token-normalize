@@ -11,6 +11,10 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class PhpTokenNormalizeExtension extends Extension
 {
+    /**
+     * @param mixed[] $configs
+     * @throws \Exception
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configDir = new FileLocator(__DIR__ . '/../../config/');

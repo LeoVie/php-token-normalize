@@ -8,3 +8,9 @@ parameters:
     disallowedMethodCalls:
         - method: '*\*::__construct'
           message: "Don't use naive object instantiation."
+          allowIn:
+            - %currentWorkingDirectory%/tests/*
+            - %currentWorkingDirectory%/src/DependencyInjection/*
+    ignoreErrors:
+        - '#Method LeoVie\\PhpTokenNormalize\\Tests.+ has parameter .+ with no value type specified in iterable type .+#'
+        - '#Method LeoVie\\PhpTokenNormalize\\Tests.+ return type has no value type specified in iterable type .+#'

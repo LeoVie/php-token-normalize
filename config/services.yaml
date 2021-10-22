@@ -1,9 +1,12 @@
 parameters:
-  # nothing to declare
+# nothing to declare
 
 services:
-  LeoVie\PhpTokenNormalize\Service\RandomGenerator:
-    autowire: true
+  _instanceof:
+    LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer:
+      tags: [ 'app.token_normalizer' ]
+  LeoVie\PhpTokenNormalize\Service\TokenSequenceNormalizer:
+    arguments: [ !tagged_iterator { tag: 'app.token_normalizer' } ]
 
   app.phptokennormalize.randomgenerator:
     alias: LeoVie\PhpTokenNormalize\Service\RandomGenerator
