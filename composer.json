@@ -1,5 +1,7 @@
 {
     "name": "leovie/php-token-normalize",
+    "description": "Normalize php tokens.",
+    "license": "proprietary",
     "type": "symfony-bundle",
     "autoload": {
         "psr-4": {
