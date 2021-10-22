@@ -1,0 +1,10 @@
+includes:
+        - /composer/vendor/spaze/phpstan-disallowed-calls/extension.neon
+parameters:
+    level: max
+    paths:
+        - %currentWorkingDirectory%/src
+        - %currentWorkingDirectory%/tests/Unit
+    disallowedMethodCalls:
+        - method: '*\*::__construct'
+          message: "Don't use naive object instantiation."
