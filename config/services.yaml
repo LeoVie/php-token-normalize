@@ -1,6 +1,9 @@
 parameters:
 # nothing to declare
 
+_defaults:
+  autowire: true
+
 services:
   _instanceof:
     LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer:
