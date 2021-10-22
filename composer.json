@@ -1,0 +1,21 @@
+{
+    "name": "leovie/php-token-normalize",
+    "type": "symfony-bundle",
+    "autoload": {
+        "psr-4": {
+            "LeoVie\\PhpTokenNormalize\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Leo Viezens",
+            "email": "leo.viezens@web.de"
+        }
+    ],
+    "require": {
+        "symfony/dependency-injection": "^5.3",
+        "symfony/config": "^5.3",
+        "symfony/yaml": "^5.3",
+        "symfony/http-kernel": "^5.3"
+    }
+}

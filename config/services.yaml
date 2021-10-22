@@ -1,0 +1,10 @@
+parameters:
+  # nothing to declare
+
+services:
+  LeoVie\PhpTokenNormalize\Service\RandomGenerator:
+    autowire: true
+
+  app.phptokennormalize.randomgenerator:
+    alias: LeoVie\PhpTokenNormalize\Service\RandomGenerator
+    public: true
