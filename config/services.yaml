@@ -2,11 +2,6 @@ parameters:
 # nothing to declare
 
 services:
-  _defaults:
-    autowire: true
-  _instanceof:
-    LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer:
-      tags: [ 'app.token_normalizer' ]
   LeoVie\PhpTokenNormalize\Service\TokenSequenceNormalizer:
     arguments: [ !tagged_iterator { tag: 'app.token_normalizer' } ]
     public: true
