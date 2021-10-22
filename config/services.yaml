@@ -8,6 +8,6 @@ services:
   LeoVie\PhpTokenNormalize\Service\TokenSequenceNormalizer:
     arguments: [ !tagged_iterator { tag: 'app.token_normalizer' } ]
 
-  app.phptokennormalize.randomgenerator:
-    alias: LeoVie\PhpTokenNormalize\Service\RandomGenerator
+  app.phptokennormalize.tokennormalizer:
+    alias: LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer
     public: true
