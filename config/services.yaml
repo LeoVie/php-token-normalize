@@ -2,7 +2,9 @@ parameters:
 # nothing to declare
 
 services:
-  LeoVie\PhpTokenNormalize\TokenNormalizer\NothingToNormalizeNormalizer: ~
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
   _instanceof:
     LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer:
       tags: [ 'app.token_normalizer' ]
