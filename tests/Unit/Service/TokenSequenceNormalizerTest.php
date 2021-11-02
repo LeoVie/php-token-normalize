@@ -100,4 +100,33 @@ class TokenSequenceNormalizerTest extends TestCase
 
         return $normalizer;
     }
+
+    /** @dataProvider normalizeLevel4Provider */
+    public function testNormalizeLevel4(TokenSequence $expected, TokenSequence $tokenSequence): void
+    {
+        self::assertEquals($expected, (new TokenSequenceNormalizer(
+            $this->createMock(Iterator::class))
+        )->normalizeLevel4($tokenSequence));
+    }
+
+    public function normalizeLevel4Provider(): array
+    {
+        $tokenToBeLeft = new PhpToken(T_VARIABLE, '');
+        return [
+            [
+                'expected' => TokenSequence::create([$tokenToBeLeft]),
+                'tokenSequence' => TokenSequence::create([
+                    new PhpToken(T_OPEN_TAG, ''),
+                    new PhpToken(T_CLOSE_TAG, ''),
+                    new PhpToken(T_ECHO, ''),
+                    $tokenToBeLeft,
+                    new PhpToken(T_PUBLIC, ''),
+                    new PhpToken(T_WHITESPACE, ''),
+                    new PhpToken(T_PRINT, ''),
+                    new PhpToken(T_COMMENT, ''),
+                    new PhpToken(T_DOC_COMMENT, ''),
+                ]),
+            ],
+        ];
+    }
 }

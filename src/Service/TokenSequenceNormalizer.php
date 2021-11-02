@@ -62,4 +62,11 @@ class TokenSequenceNormalizer
 
         throw NoMatchingTokenNormalizerFound::create($tokenName);
     }
+
+    public function normalizeLevel4(TokenSequence $tokenSequence): TokenSequence
+    {
+        return $this->normalizeLevel1($tokenSequence)
+            ->withoutOutputs()
+            ->filter();
+    }
 }
