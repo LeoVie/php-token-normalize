@@ -368,6 +368,66 @@ class TokenSequenceTest extends TestCase
         ];
     }
 
+    /** @dataProvider withoutOutputsProvider */
+    public function testWithoutOutputs(array $expected, TokenSequence $tokenSequence): void
+    {
+        self::assertEquals($expected, $tokenSequence->withoutOutputs()->filter()->getTokens());
+    }
+
+    public function withoutOutputsProvider(): Generator
+    {
+        yield 'no tokens' => [
+            'expected' => [],
+            TokenSequence::create([])
+        ];
+
+        yield 'only echo tag' => [
+            'expected' => [],
+            TokenSequence::create([
+                $this->mockPhpToken(T_ECHO, 'echo "abc"'),
+            ])
+        ];
+
+        yield 'only print tag' => [
+            'expected' => [],
+            TokenSequence::create([
+                $this->mockPhpToken(T_PRINT, 'print("abc")'),
+            ])
+        ];
+
+        yield 'only echo and print tag' => [
+            'expected' => [],
+            TokenSequence::create([
+                $this->mockPhpToken(T_ECHO, 'echo "abc"'),
+                $this->mockPhpToken(T_PRINT, 'print("abc")'),
+            ])
+        ];
+
+        yield 'no output tokens' => [
+            'expected' => [
+                $this->mockPhpToken(T_OPEN_TAG, '<?php'),
+                $this->mockPhpToken(T_FUNCTION, 'function'),
+            ],
+            TokenSequence::create([
+                $this->mockPhpToken(T_OPEN_TAG, '<?php'),
+                $this->mockPhpToken(T_FUNCTION, 'function'),
+            ])
+        ];
+
+        yield 'mixed' => [
+            'expected' => [
+                $this->mockPhpToken(T_OPEN_TAG, '<?php'),
+                $this->mockPhpToken(T_FUNCTION, 'function'),
+            ],
+            TokenSequence::create([
+                $this->mockPhpToken(T_OPEN_TAG, '<?php'),
+                $this->mockPhpToken(T_PRINT, 'print("abc")'),
+                $this->mockPhpToken(T_FUNCTION, 'function'),
+                $this->mockPhpToken(T_ECHO, 'echo "abc"'),
+            ])
+        ];
+    }
+
     private function mockPhpToken(int $type, string $asString): PhpToken
     {
         $phpToken = $this->createMock(PhpToken::class);
@@ -390,7 +450,29 @@ class TokenSequenceTest extends TestCase
             TokenSequence::create([])
         ];
 
-        yield 'no doc comment token' => [
+        yield 'with tokens' => [
+            'expected' => '<?php function',
+            TokenSequence::create([
+                $this->mockPhpToken(T_OPEN_TAG, '<?php'),
+                $this->mockPhpToken(T_FUNCTION, 'function'),
+            ])
+        ];
+    }
+
+    /** @dataProvider toCodeProvider */
+    public function testToCode(string $expected, TokenSequence $tokenSequence): void
+    {
+        self::assertSame($expected, $tokenSequence->toCode());
+    }
+
+    public function toCodeProvider(): \Generator
+    {
+        yield 'no tokens' => [
+            'expected' => '',
+            TokenSequence::create([])
+        ];
+
+        yield 'with tokens' => [
             'expected' => '<?php function',
             TokenSequence::create([
                 $this->mockPhpToken(T_OPEN_TAG, '<?php'),

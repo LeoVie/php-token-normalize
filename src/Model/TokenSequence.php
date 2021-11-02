@@ -55,7 +55,7 @@ class TokenSequence
 
     public function identity(): string
     {
-        return join(' ', $this->tokens);
+        return $this->toCode();
     }
 
     public function withoutAccessModifiers(): self
@@ -90,10 +90,21 @@ class TokenSequence
         return $this->ignoreTokenType(T_DOC_COMMENT);
     }
 
+    public function withoutOutputs(): self
+    {
+        return $this->ignoreTokenType(T_PRINT)
+            ->ignoreTokenType(T_ECHO);
+    }
+
     private function ignoreTokenType(int $type): self
     {
         $this->tokenTypesToIgnore = array_merge($this->tokenTypesToIgnore, [$type]);
 
         return $this;
+    }
+
+    public function toCode(): string
+    {
+        return join(' ', $this->getTokens());
     }
 }
