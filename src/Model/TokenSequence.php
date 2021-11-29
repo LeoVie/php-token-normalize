@@ -9,6 +9,9 @@ class TokenSequence
     /** @var int[] */
     private array $tokenTypesToIgnore = [];
 
+    /** @var int[] */
+    private array $onlyTokenTypes = [];
+
     /** @param PhpToken[] $tokens */
     private function __construct(private array $tokens)
     {
@@ -38,6 +41,17 @@ class TokenSequence
 
     public function filter(): self
     {
+        if (!empty($this->onlyTokenTypes)) {
+            return new self(
+                array_values(
+                    array_filter(
+                        $this->tokens,
+                        fn(PhpToken $t): bool => in_array($t->id, $this->onlyTokenTypes)
+                    )
+                ),
+            );
+        }
+
         return new self(
             array_values(
                 array_filter(
@@ -88,6 +102,13 @@ class TokenSequence
     public function withoutDocComments(): self
     {
         return $this->ignoreTokenType(T_DOC_COMMENT);
+    }
+
+    public function onlyComments(): self
+    {
+        $this->onlyTokenTypes = array_merge($this->onlyTokenTypes, [T_COMMENT]);
+
+        return $this;
     }
 
     public function withoutOutputs(): self
