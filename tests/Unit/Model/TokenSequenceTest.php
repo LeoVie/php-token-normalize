@@ -443,7 +443,7 @@ class TokenSequenceTest extends TestCase
         self::assertSame($expected, $tokenSequence->identity());
     }
 
-    public function identityProvider(): \Generator
+    public function identityProvider(): Generator
     {
         yield 'no tokens' => [
             'expected' => '',
@@ -465,7 +465,7 @@ class TokenSequenceTest extends TestCase
         self::assertSame($expected, $tokenSequence->toCode());
     }
 
-    public function toCodeProvider(): \Generator
+    public function toCodeProvider(): Generator
     {
         yield 'no tokens' => [
             'expected' => '',
@@ -477,6 +477,104 @@ class TokenSequenceTest extends TestCase
             TokenSequence::create([
                 $this->mockPhpToken(T_OPEN_TAG, '<?php'),
                 $this->mockPhpToken(T_FUNCTION, 'function'),
+            ])
+        ];
+    }
+
+    /** @dataProvider withoutFunctionStaticProvider */
+    public function testWithoutFunctionStatic(array $expected, TokenSequence $tokenSequence): void
+    {
+        self::assertSame($expected, $tokenSequence->withoutFunctionStatic()->filter()->getTokens());
+    }
+
+    public function withoutFunctionStaticProvider(): Generator
+    {
+        yield 'no tokens' => [
+            'expected' => [],
+            TokenSequence::create([])
+        ];
+
+        $functionToken = $this->mockPhpToken(T_FUNCTION, 'function');
+        yield 'static > function' => [
+            'expected' => [
+                $functionToken
+            ],
+            TokenSequence::create([
+                $this->mockPhpToken(T_STATIC, 'static'),
+                $functionToken,
+            ])
+        ];
+
+        $staticToken = $this->mockPhpToken(T_STATIC, 'static');
+        yield 'static' => [
+            'expected' => [
+                $staticToken
+            ],
+            TokenSequence::create([
+                $staticToken,
+            ])
+        ];
+
+        $whitespaceToken = $this->mockPhpToken(T_WHITESPACE, ' ');
+        $functionToken = $this->mockPhpToken(T_FUNCTION, 'function');
+        $staticToken = $this->mockPhpToken(T_STATIC, 'static');
+        yield 'static > function > static' => [
+            'expected' => [
+                $whitespaceToken,
+                $functionToken,
+                $staticToken
+            ],
+            TokenSequence::create([
+                $this->mockPhpToken(T_STATIC, 'static'),
+                $whitespaceToken,
+                $functionToken,
+                $staticToken,
+            ])
+        ];
+
+        $staticToken = $this->mockPhpToken(T_STATIC, 'static');
+        $variableToken = $this->mockPhpToken(T_VARIABLE, '$a');
+        $functionToken = $this->mockPhpToken(T_FUNCTION, 'function');
+        yield 'static > variable > function' => [
+            'expected' => [
+                $staticToken,
+                $variableToken,
+                $functionToken,
+            ],
+            TokenSequence::create([
+                $staticToken,
+                $variableToken,
+                $functionToken,
+            ])
+        ];
+
+        $staticToken = $this->mockPhpToken(T_STATIC, 'static');
+        $functionToken = $this->mockPhpToken(T_FUNCTION, 'function');
+        yield 'function > static' => [
+            'expected' => [
+                $functionToken,
+                $staticToken,
+            ],
+            TokenSequence::create([
+                $functionToken,
+                $staticToken,
+            ])
+        ];
+
+        $staticToken = $this->mockPhpToken(T_STATIC, 'static');
+        $variableToken = $this->mockPhpToken(T_VARIABLE, '$a');
+        $functionToken = $this->mockPhpToken(T_FUNCTION, 'function');
+        yield 'static > variable > static > function' => [
+            'expected' => [
+                $staticToken,
+                $variableToken,
+                $functionToken,
+            ],
+            TokenSequence::create([
+                $staticToken,
+                $variableToken,
+                $staticToken,
+                $functionToken,
             ])
         ];
     }

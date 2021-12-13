@@ -111,15 +111,15 @@ class TokenSequenceNormalizerTest extends TestCase
 
     public function normalizeLevel4Provider(): array
     {
-        $tokenToBeLeft = new PhpToken(T_VARIABLE, '');
+        $variable = new PhpToken(T_VARIABLE, '');
         return [
             [
-                'expected' => TokenSequence::create([$tokenToBeLeft]),
+                'expected' => TokenSequence::create([$variable]),
                 'tokenSequence' => TokenSequence::create([
                     new PhpToken(T_OPEN_TAG, ''),
                     new PhpToken(T_CLOSE_TAG, ''),
                     new PhpToken(T_ECHO, ''),
-                    $tokenToBeLeft,
+                    $variable,
                     new PhpToken(T_PUBLIC, ''),
                     new PhpToken(T_WHITESPACE, ''),
                     new PhpToken(T_PRINT, ''),

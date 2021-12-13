@@ -12,6 +12,9 @@ class TokenSequence
     /** @var int[] */
     private array $onlyTokenTypes = [];
 
+    /** @var int[] */
+    private array $tokenIndicesToIgnore = [];
+
     /** @param PhpToken[] $tokens */
     private function __construct(private array $tokens)
     {
@@ -56,7 +59,8 @@ class TokenSequence
             array_values(
                 array_filter(
                     $this->tokens,
-                    fn(PhpToken $t): bool => !in_array($t->id, $this->tokenTypesToIgnore)
+                    fn(PhpToken $t, int $i): bool => !in_array($i, $this->tokenIndicesToIgnore) && !in_array($t->id, $this->tokenTypesToIgnore),
+                    ARRAY_FILTER_USE_BOTH
                 )
             ),
         );
@@ -120,6 +124,42 @@ class TokenSequence
     private function ignoreTokenType(int $type): self
     {
         $this->tokenTypesToIgnore = array_merge($this->tokenTypesToIgnore, [$type]);
+
+        return $this;
+    }
+
+
+    public function withoutFunctionStatic(): self
+    {
+        /** @var int $lastStaticIndex */
+        $lastStaticIndex = null;
+        $lastTokenWasStatic = false;
+
+        foreach ($this->tokens as $i => $token) {
+            if (!in_array($token->id, [T_WHITESPACE, T_STATIC, T_FUNCTION])) {
+                $lastTokenWasStatic = false;
+                continue;
+            }
+
+            $currentTokenIsStatic = $token->id === T_STATIC;
+            if ($currentTokenIsStatic) {
+                $lastStaticIndex = $i;
+                $lastTokenWasStatic = true;
+                continue;
+            }
+
+            $currentTokenIsFunction = $token->id === T_FUNCTION;
+            if ($currentTokenIsFunction && $lastTokenWasStatic) {
+                $this->ignoreTokenIndex($lastStaticIndex);
+            }
+        }
+
+        return $this;
+    }
+
+    private function ignoreTokenIndex(int $index): self
+    {
+        $this->tokenIndicesToIgnore[] = $index;
 
         return $this;
     }
