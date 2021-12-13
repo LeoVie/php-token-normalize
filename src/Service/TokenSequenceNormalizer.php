@@ -66,6 +66,7 @@ class TokenSequenceNormalizer
     public function normalizeLevel4(TokenSequence $tokenSequence): TokenSequence
     {
         return $this->normalizeLevel1($tokenSequence)
+            ->withoutFunctionStatic()
             ->withoutOutputs()
             ->filter();
     }
