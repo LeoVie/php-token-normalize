@@ -18,7 +18,8 @@ class DNumberNormalizer implements TokenNormalizer
         return $this;
     }
 
-    public function normalizeToken(PhpToken $token): PhpToken
+    /** @param PhpToken[] $prevTokens */
+    public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken
     {
         return new PhpToken(T_DNUMBER, '1.0', $token->line, $token->pos);
     }

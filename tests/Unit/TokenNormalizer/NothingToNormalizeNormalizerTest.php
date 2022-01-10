@@ -39,7 +39,7 @@ class NothingToNormalizeNormalizerTest extends TestCase
     /** @dataProvider normalizeProvider */
     public function testNormalize(PhpToken $token): void
     {
-        self::assertEquals($token, (new NothingToNormalizeNormalizer())->normalizeToken($token));
+        self::assertEquals($token, (new NothingToNormalizeNormalizer())->normalizeToken([], $token));
     }
 
     public function normalizeProvider(): array

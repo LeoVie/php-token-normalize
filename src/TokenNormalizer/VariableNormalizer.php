@@ -28,7 +28,8 @@ class VariableNormalizer implements TokenNormalizer
         return $this;
     }
 
-    public function normalizeToken(PhpToken $token): PhpToken
+    /** @param PhpToken[] $prevTokens */
+    public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken
     {
         $originalVariable = $token->text;
         if (!$this->variableReplacementRegister->isReplacementRegistered($originalVariable)) {

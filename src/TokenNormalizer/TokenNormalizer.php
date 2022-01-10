@@ -10,5 +10,6 @@ interface TokenNormalizer
 {
     public function supports(PhpToken $token): bool;
     public function reset(): self;
-    public function normalizeToken(PhpToken $token): PhpToken;
+    /** @param PhpToken[] $prevTokens */
+    public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken;
 }

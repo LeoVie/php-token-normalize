@@ -47,17 +47,19 @@ class TokenSequenceNormalizerTest extends TestCase
     {
         $variableNormalizer = $this->mockTokenNormalizer(
             fn(PhpToken $token): bool => $token->id === T_VARIABLE,
-            fn(PhpToken $token) => new PhpToken($token->id, 'NORMALIZED_VARIABLE_' . $token->text),
+            fn(array $prevTokens, PhpToken $token) => new PhpToken($token->id, 'NORMALIZED_VARIABLE_' . $token->text),
         );
 
         $lNumberNormalizer = $this->mockTokenNormalizer(
             fn(PhpToken $token): bool => $token->id === T_LNUMBER,
-            fn(PhpToken $token) => new PhpToken($token->id, 'NORMALIZED_LNUMBER_' . $token->text),
+            fn(array $prevTokens, PhpToken $token) => new PhpToken($token->id, 'NORMALIZED_LNUMBER_' . $token->text),
         );
 
         $nothingToNormalizeNormalizer = $this->createMock(NothingToNormalizeNormalizer::class);
         $nothingToNormalizeNormalizer->method('supports')->willReturnCallback(fn(PhpToken $token): bool => true);
-        $nothingToNormalizeNormalizer->method('normalizeToken')->willReturnCallback(fn(PhpToken $token) => new PhpToken($token->id, 'NOT_NORMALIZED_' . $token->text));
+        $nothingToNormalizeNormalizer->method('normalizeToken')->willReturnCallback(
+            fn(array $prevTokens, PhpToken $token) => new PhpToken($token->id, 'NOT_NORMALIZED_' . $token->text)
+        );
 
         $tokenNormalizers = new ArrayIterator([$variableNormalizer, $lNumberNormalizer, $nothingToNormalizeNormalizer]);
 

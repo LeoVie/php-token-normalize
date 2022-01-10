@@ -24,7 +24,8 @@ class NothingToNormalizeNormalizer implements TokenNormalizer
         return $this;
     }
 
-    public function normalizeToken(PhpToken $token): PhpToken
+    /** @param PhpToken[] $prevTokens */
+    public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken
     {
         return new PhpToken($token->id, $token->text, $token->line, $token->pos);
     }

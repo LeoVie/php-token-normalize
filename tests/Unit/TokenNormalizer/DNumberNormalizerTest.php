@@ -39,7 +39,7 @@ class DNumberNormalizerTest extends TestCase
     /** @dataProvider normalizeProvider */
     public function testNormalize(PhpToken $expected, PhpToken $token): void
     {
-        self::assertEquals($expected, (new DNumberNormalizer())->normalizeToken($token));
+        self::assertEquals($expected, (new DNumberNormalizer())->normalizeToken([], $token));
     }
 
     public function normalizeProvider(): array

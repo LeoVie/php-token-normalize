@@ -37,12 +37,13 @@ class TokenSequenceNormalizer
             $tokenNormalizer->reset();
         }
 
-        return TokenSequence::create(
-            array_map(
-                fn(PhpToken $t): PhpToken => $this->findMatchingTokenNormalizer($t)->normalizeToken($t),
-                $tokenSequence->getTokens()
-            )
-        );
+        $normalizedTokens = [];
+        foreach ($tokenSequence->getTokens() as $token) {
+            $normalizedToken = $this->findMatchingTokenNormalizer($token)->normalizeToken($normalizedTokens, $token);
+            $normalizedTokens[] = $normalizedToken;
+        }
+
+        return TokenSequence::create($normalizedTokens);
     }
 
     /**
