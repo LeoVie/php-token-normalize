@@ -71,14 +71,8 @@ class TokenSequenceNormalizerTest extends TestCase
         return [
             [
                 'expected' => TokenSequence::create([
-                    new PhpToken(T_OPEN_TAG, 'NOT_NORMALIZED_<?php'),
-                    new PhpToken(T_CLOSE_TAG, 'NOT_NORMALIZED_?>'),
                     new PhpToken(T_VARIABLE, 'NORMALIZED_VARIABLE_$a'),
-                    new PhpToken(T_PUBLIC, 'NOT_NORMALIZED_public'),
                     new PhpToken(T_LNUMBER, 'NORMALIZED_LNUMBER_700'),
-                    new PhpToken(T_WHITESPACE, 'NOT_NORMALIZED_ '),
-                    new PhpToken(T_COMMENT, 'NOT_NORMALIZED_// foo'),
-                    new PhpToken(T_DOC_COMMENT, 'NOT_NORMALIZED_/** bar */'),
                 ]),
                 'tokenSequence' => TokenSequence::create([
                     new PhpToken(T_OPEN_TAG, '<?php'),

@@ -43,7 +43,7 @@ class TokenSequenceNormalizer
             $normalizedTokens[] = $normalizedToken;
         }
 
-        return TokenSequence::create($normalizedTokens);
+        return $this->normalizeLevel1(TokenSequence::create($normalizedTokens));
     }
 
     /**
