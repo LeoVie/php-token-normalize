@@ -6,11 +6,11 @@ namespace LeoVie\PhpTokenNormalize\TokenNormalizer;
 
 use PhpToken;
 
-class ConstantEncapsedStringNormalizer implements TokenNormalizer
+class StringNormalizer implements TokenNormalizer
 {
     public function supports(PhpToken $token): bool
     {
-        return $token->id === T_CONSTANT_ENCAPSED_STRING;
+        return $token->id === T_STRING;
     }
 
     public function reset(): self
@@ -21,6 +21,6 @@ class ConstantEncapsedStringNormalizer implements TokenNormalizer
     /** @param PhpToken[] $prevTokens */
     public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken
     {
-        return new PhpToken(T_CONSTANT_ENCAPSED_STRING, 'constant_encapsed_string', $token->line, $token->pos);
+        return new PhpToken(T_STRING, 'string', $token->line, $token->pos);
     }
 }
