@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace LeoVie\PhpTokenNormalize\Tests\Unit\Service;
 
-use ArrayIterator;
-use Iterator;
 use LeoVie\PhpTokenNormalize\Model\TokenSequence;
 use LeoVie\PhpTokenNormalize\Service\TokenSequenceNormalizer;
-use LeoVie\PhpTokenNormalize\TokenNormalizer\NothingToNormalizeNormalizer;
 use LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer;
+use LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizerCollection;
 use PhpToken;
 use PHPUnit\Framework\TestCase;
 
@@ -19,7 +17,7 @@ class TokenSequenceNormalizerTest extends TestCase
     public function testNormalizeLevel1(TokenSequence $expected, TokenSequence $tokenSequence): void
     {
         self::assertEquals($expected, (new TokenSequenceNormalizer(
-            $this->createMock(Iterator::class))
+            $this->createMock(TokenNormalizerCollection::class))
         )->normalizeLevel1($tokenSequence));
     }
 
@@ -46,24 +44,32 @@ class TokenSequenceNormalizerTest extends TestCase
     public function testNormalizeLevel2(TokenSequence $expected, TokenSequence $tokenSequence): void
     {
         $variableNormalizer = $this->mockTokenNormalizer(
-            fn(PhpToken $token): bool => $token->id === T_VARIABLE,
             fn(array $prevTokens, PhpToken $token) => new PhpToken($token->id, 'NORMALIZED_VARIABLE_' . $token->text),
         );
 
         $lNumberNormalizer = $this->mockTokenNormalizer(
-            fn(PhpToken $token): bool => $token->id === T_LNUMBER,
             fn(array $prevTokens, PhpToken $token) => new PhpToken($token->id, 'NORMALIZED_LNUMBER_' . $token->text),
         );
 
-        $nothingToNormalizeNormalizer = $this->createMock(NothingToNormalizeNormalizer::class);
-        $nothingToNormalizeNormalizer->method('supports')->willReturnCallback(fn(PhpToken $token): bool => true);
-        $nothingToNormalizeNormalizer->method('normalizeToken')->willReturnCallback(
-            fn(array $prevTokens, PhpToken $token) => new PhpToken($token->id, 'NOT_NORMALIZED_' . $token->text)
+        $nothingToNormalizeNormalizer = $this->mockTokenNormalizer(
+            fn(array $prevTokens, PhpToken $token) => new PhpToken($token->id, 'NOT_NORMALIZED' . $token->text),
         );
 
-        $tokenNormalizers = new ArrayIterator([$variableNormalizer, $lNumberNormalizer, $nothingToNormalizeNormalizer]);
 
-        self::assertEquals($expected, (new TokenSequenceNormalizer($tokenNormalizers))->normalizeLevel2($tokenSequence));
+        $tokenNormalizerCollection = $this->createMock(TokenNormalizerCollection::class);
+        $tokenNormalizerCollection->method('findMatching')
+            ->willReturnCallback(fn(PhpToken $token) => match ($token->id) {
+                T_VARIABLE => $variableNormalizer,
+                T_LNUMBER => $lNumberNormalizer,
+                default => $nothingToNormalizeNormalizer,
+            });
+
+        $tokenSequenceNormalizer = new TokenSequenceNormalizer($tokenNormalizerCollection);
+
+        self::assertEquals(
+            $expected,
+            $tokenSequenceNormalizer->normalizeLevel2($tokenSequence)
+        );
     }
 
     public function normalizeLevel2Provider(): array
@@ -88,10 +94,9 @@ class TokenSequenceNormalizerTest extends TestCase
         ];
     }
 
-    private function mockTokenNormalizer(callable $supports, callable $normalizeToken): TokenNormalizer
+    private function mockTokenNormalizer(callable $normalizeToken): TokenNormalizer
     {
         $normalizer = $this->createMock(TokenNormalizer::class);
-        $normalizer->method('supports')->willReturnCallback($supports);
         $normalizer->method('normalizeToken')->willReturnCallback($normalizeToken);
 
         return $normalizer;
@@ -100,9 +105,14 @@ class TokenSequenceNormalizerTest extends TestCase
     /** @dataProvider normalizeLevel4Provider */
     public function testNormalizeLevel4(TokenSequence $expected, TokenSequence $tokenSequence): void
     {
-        self::assertEquals($expected, (new TokenSequenceNormalizer(
-            $this->createMock(Iterator::class))
-        )->normalizeLevel4($tokenSequence));
+        $tokenSequenceNormalizer = new TokenSequenceNormalizer(
+            $this->createMock(TokenNormalizerCollection::class)
+        );
+
+        self::assertEquals(
+            $expected,
+            $tokenSequenceNormalizer->normalizeLevel4($tokenSequence)
+        );
     }
 
     public function normalizeLevel4Provider(): array

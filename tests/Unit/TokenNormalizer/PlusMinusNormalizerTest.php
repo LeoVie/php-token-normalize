@@ -52,6 +52,15 @@ class PlusMinusNormalizerTest extends TestCase
                 'token' => new PhpToken(Token::getId(Token::T_PLUS), '+', 10, 20),
             ],
             [
+                'expected' => new PhpToken(Token::getId(Token::T_PLUS), '+', 10, 20),
+                'prevTokens' => [
+                    new PhpToken(T_WHITESPACE, ' '),
+                    new PhpToken(Token::getId(Token::T_EQUAL), '='),
+                    new PhpToken(T_LNUMBER, '10'),
+                ],
+                'token' => new PhpToken(Token::getId(Token::T_PLUS), '+', 10, 20),
+            ],
+            [
                 'expected' => new PhpToken(T_WHITESPACE, ' ', 10, 20),
                 'prevTokens' => [
                     new PhpToken(T_WHITESPACE, ' '),
