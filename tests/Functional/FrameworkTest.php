@@ -12,8 +12,8 @@ class FrameworkTest extends TestCase
     {
         $kernel = new TestingKernel('test', true);
         $kernel->boot();
-        $paramGeneratorFinder = $kernel->getContainer()->get(TokenSequenceNormalizer::class);
+        $tokenSequenceNormalizer = $kernel->getContainer()->get(TokenSequenceNormalizer::class);
 
-        self::assertInstanceOf(TokenSequenceNormalizer::class, $paramGeneratorFinder);
+        self::assertInstanceOf(TokenSequenceNormalizer::class, $tokenSequenceNormalizer);
     }
 }
