@@ -578,4 +578,38 @@ class TokenSequenceTest extends TestCase
             ])
         ];
     }
+
+    /** @dataProvider onlyCommentsProvider */
+    public function testOnlyComments(array $expected, TokenSequence $tokenSequence): void
+    {
+        self::assertSame($expected, $tokenSequence->onlyComments()->filter()->getTokens());
+    }
+
+    public function onlyCommentsProvider(): Generator
+    {
+        yield 'no tokens' => [
+            'expected' => [],
+            TokenSequence::create([])
+        ];
+
+        yield 'function' => [
+            'expected' => [],
+            TokenSequence::create([$this->mockPhpToken(T_FUNCTION, 'function')])
+        ];
+
+        $commentToken = $this->mockPhpToken(T_COMMENT, '// comment');
+        yield 'comment' => [
+            'expected' => [$commentToken],
+            TokenSequence::create([$commentToken])
+        ];
+
+        $commentToken = $this->mockPhpToken(T_COMMENT, '// comment');
+        yield 'function > comment' => [
+            'expected' => [$commentToken],
+            TokenSequence::create([
+                $this->mockPhpToken(T_FUNCTION, 'function'),
+                $commentToken
+            ])
+        ];
+    }
 }
