@@ -110,7 +110,7 @@ class TokenSequence
 
     public function onlyComments(): self
     {
-        $this->onlyTokenTypes = array_merge($this->onlyTokenTypes, [T_COMMENT]);
+        $this->onlyTokenTypes = [T_COMMENT];
 
         return $this;
     }

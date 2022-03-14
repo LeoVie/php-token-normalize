@@ -27,8 +27,8 @@ class PlusMinusNormalizer implements TokenNormalizer
     {
         $prevTokensReverse = array_reverse($prevTokens);
         foreach ($prevTokensReverse as $prevToken) {
-            if ($prevToken->id === T_WHITESPACE) {
-                continue;
+            if ($prevToken->id !== T_WHITESPACE && $prevToken->getTokenName() !== '=') {
+                return $token;
             }
 
             if ($prevToken->getTokenName() === '=') {

@@ -10,6 +10,8 @@ services:
   _instanceof:
     LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer:
       tags: [ 'app.token_normalizer' ]
-  LeoVie\PhpTokenNormalize\Service\TokenSequenceNormalizer:
+  LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizerCollection:
     arguments: [ !tagged_iterator { tag: 'app.token_normalizer' } ]
+  LeoVie\PhpTokenNormalize\Service\TokenSequenceNormalizer:
     public: true
+    autowire: true

@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace LeoVie\PhpTokenNormalize\Service;
 
-use LeoVie\PhpTokenNormalize\Exception\NoMatchingTokenNormalizerFound;
 use LeoVie\PhpTokenNormalize\Model\TokenSequence;
 use LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizer;
-use PhpToken;
-use Safe\Exceptions\StringsException;
+use LeoVie\PhpTokenNormalize\TokenNormalizer\TokenNormalizerCollection;
 
 class TokenSequenceNormalizer
 {
-    /** @param iterable<TokenNormalizer> $tokenNormalizers */
     public function __construct(
-        private iterable $tokenNormalizers,
+        private TokenNormalizerCollection $tokenNormalizerCollection,
     )
     {
     }
@@ -33,35 +30,16 @@ class TokenSequenceNormalizer
 
     public function normalizeLevel2(TokenSequence $tokenSequence): TokenSequence
     {
-        foreach ($this->tokenNormalizers as $tokenNormalizer) {
-            $tokenNormalizer->reset();
-        }
+        $this->tokenNormalizerCollection->walk(fn(TokenNormalizer $tn) => $tn->reset());
 
         $normalizedTokens = [];
         foreach ($tokenSequence->getTokens() as $token) {
-            $normalizedToken = $this->findMatchingTokenNormalizer($token)->normalizeToken($normalizedTokens, $token);
+            $normalizedToken = $this->tokenNormalizerCollection->findMatching($token)
+                ->normalizeToken($normalizedTokens, $token);
             $normalizedTokens[] = $normalizedToken;
         }
 
         return $this->normalizeLevel1(TokenSequence::create($normalizedTokens));
-    }
-
-    /**
-     * @throws NoMatchingTokenNormalizerFound
-     * @throws StringsException
-     */
-    private function findMatchingTokenNormalizer(PhpToken $token): TokenNormalizer
-    {
-        foreach ($this->tokenNormalizers as $tokenNormalizer) {
-            if ($tokenNormalizer->supports($token)) {
-                return $tokenNormalizer;
-            }
-        }
-
-        /** @var string $tokenName */
-        $tokenName = $token->getTokenName();
-
-        throw NoMatchingTokenNormalizerFound::create($tokenName);
     }
 
     public function normalizeLevel4(TokenSequence $tokenSequence): TokenSequence
