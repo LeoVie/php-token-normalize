@@ -4,7 +4,7 @@ namespace LeoVie\PhpTokenNormalize\Model;
 
 use PhpToken;
 
-class TokenSequence implements \Serializable
+class TokenSequence
 {
     /** @var int[] */
     private array $tokenTypesToIgnore = [];
@@ -172,18 +172,5 @@ class TokenSequence implements \Serializable
     public function toCode(): string
     {
         return join(' ', $this->getTokens());
-    }
-
-    public function serialize(): string
-    {
-        return serialize($this->tokens);
-    }
-
-    public function unserialize(string $data): self
-    {
-        /** @var array<PhpToken> $tokens */
-        $tokens = unserialize($data);
-
-        return new self($tokens);
     }
 }

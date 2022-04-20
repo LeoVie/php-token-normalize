@@ -620,8 +620,8 @@ class TokenSequenceTest extends TestCase
             new PhpToken(T_FUNCTION, 'function'),
         ]);
 
-        $serialized = $tokenSequence->serialize();
-        $unserialized = TokenSequence::createFromSerialized($serialized);
+        $serialized = serialize($tokenSequence);
+        $unserialized = unserialize($serialized);
 
         self::assertEquals($tokenSequence->getTokens(), $unserialized->getTokens());
     }
