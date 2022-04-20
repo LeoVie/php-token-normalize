@@ -26,11 +26,6 @@ class TokenSequence
         return new self($tokens);
     }
 
-    public static function createFromSerialized(string $serialized): self
-    {
-        return (new self([]))->unserialize($serialized);
-    }
-
     /** @return PhpToken[] */
     public function getTokens(): array
     {

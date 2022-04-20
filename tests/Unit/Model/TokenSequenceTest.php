@@ -621,6 +621,7 @@ class TokenSequenceTest extends TestCase
         ]);
 
         $serialized = serialize($tokenSequence);
+        /** @var TokenSequence $unserialized */
         $unserialized = unserialize($serialized);
 
         self::assertEquals($tokenSequence->getTokens(), $unserialized->getTokens());
