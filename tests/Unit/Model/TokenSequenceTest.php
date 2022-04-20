@@ -612,4 +612,17 @@ class TokenSequenceTest extends TestCase
             ])
         ];
     }
+
+    public function testSerializeAndUnserialize(): void
+    {
+        $tokenSequence = TokenSequence::create([
+            new PhpToken(T_OPEN_TAG, '<?php'),
+            new PhpToken(T_FUNCTION, 'function'),
+        ]);
+
+        $serialized = $tokenSequence->serialize();
+        $unserialized = TokenSequence::createFromSerialized($serialized);
+
+        self::assertEquals($tokenSequence->getTokens(), $unserialized->getTokens());
+    }
 }
