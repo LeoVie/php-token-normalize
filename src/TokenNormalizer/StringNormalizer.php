@@ -21,6 +21,6 @@ class StringNormalizer implements TokenNormalizer
     /** @param PhpToken[] $prevTokens */
     public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken
     {
-        return new PhpToken(T_STRING, 'string', $token->line, $token->pos);
+        return new PhpToken(T_STRING, 'str', $token->line, $token->pos);
     }
 }

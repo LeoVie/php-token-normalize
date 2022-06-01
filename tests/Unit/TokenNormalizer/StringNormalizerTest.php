@@ -46,11 +46,11 @@ class StringNormalizerTest extends TestCase
     {
         return [
             [
-                'expected' => new PhpToken(T_STRING, 'string', 10, 20),
+                'expected' => new PhpToken(T_STRING, 'str', 10, 20),
                 'token' => new PhpToken(T_STRING, 'lorem ipsum', 10, 20),
             ],
             [
-                'expected' => new PhpToken(T_STRING, 'string', 199, 71),
+                'expected' => new PhpToken(T_STRING, 'str', 199, 71),
                 'token' => new PhpToken(T_STRING, '', 199, 71),
             ],
         ];
