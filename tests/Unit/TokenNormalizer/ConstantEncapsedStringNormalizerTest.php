@@ -46,11 +46,11 @@ class ConstantEncapsedStringNormalizerTest extends TestCase
     {
         return [
             [
-                'expected' => new PhpToken(T_CONSTANT_ENCAPSED_STRING, 'constant_encapsed_string', 10, 20),
+                'expected' => new PhpToken(T_CONSTANT_ENCAPSED_STRING, "'constant_encapsed_string'", 10, 20),
                 'token' => new PhpToken(T_CONSTANT_ENCAPSED_STRING, 'lorem ipsum', 10, 20),
             ],
             [
-                'expected' => new PhpToken(T_CONSTANT_ENCAPSED_STRING, 'constant_encapsed_string', 199, 71),
+                'expected' => new PhpToken(T_CONSTANT_ENCAPSED_STRING, "'constant_encapsed_string'", 199, 71),
                 'token' => new PhpToken(T_CONSTANT_ENCAPSED_STRING, '', 199, 71),
             ],
         ];

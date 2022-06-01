@@ -21,6 +21,6 @@ class ConstantEncapsedStringNormalizer implements TokenNormalizer
     /** @param PhpToken[] $prevTokens */
     public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken
     {
-        return new PhpToken(T_CONSTANT_ENCAPSED_STRING, 'constant_encapsed_string', $token->line, $token->pos);
+        return new PhpToken(T_CONSTANT_ENCAPSED_STRING, "'constant_encapsed_string'", $token->line, $token->pos);
     }
 }
