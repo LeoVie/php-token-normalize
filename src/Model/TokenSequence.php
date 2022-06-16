@@ -52,7 +52,7 @@ class TokenSequence
     public function filter(): self
     {
         if (!empty($this->onlyTokenTypes)) {
-            return new self(
+            return self::create(
                 array_values(
                     array_filter(
                         $this->tokens,
@@ -62,7 +62,7 @@ class TokenSequence
             );
         }
 
-        return new self(
+        return self::create(
             array_values(
                 array_filter(
                     $this->tokens,
