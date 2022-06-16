@@ -6,8 +6,6 @@ use PhpToken;
 
 class TokenSequence
 {
-    private string $asCode;
-
     /** @var int[] */
     private array $tokenTypesToIgnore = [];
 
