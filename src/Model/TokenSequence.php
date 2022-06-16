@@ -16,14 +16,18 @@ class TokenSequence
     private array $tokenIndicesToIgnore = [];
 
     /** @param PhpToken[] $tokens */
-    private function __construct(private array $tokens)
+    private function __construct(
+        private array  $tokens,
+        private string $asCode
+    )
     {
     }
 
     /** @param PhpToken[] $tokens */
     public static function create(array $tokens): self
     {
-        return new self($tokens);
+        $asCode = join(' ', $tokens);
+        return new self($tokens, $asCode);
     }
 
     /** @return PhpToken[] */
@@ -45,7 +49,7 @@ class TokenSequence
     public function filter(): self
     {
         if (!empty($this->onlyTokenTypes)) {
-            return new self(
+            return self::create(
                 array_values(
                     array_filter(
                         $this->tokens,
@@ -55,7 +59,7 @@ class TokenSequence
             );
         }
 
-        return new self(
+        return self::create(
             array_values(
                 array_filter(
                     $this->tokens,
@@ -166,6 +170,6 @@ class TokenSequence
 
     public function toCode(): string
     {
-        return join(' ', $this->getTokens());
+        return $this->asCode;
     }
 }
