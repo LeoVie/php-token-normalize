@@ -6,8 +6,6 @@ use PhpToken;
 
 class TokenSequence
 {
-    private string $asCode;
-
     /** @var int[] */
     private array $tokenTypesToIgnore = [];
 
@@ -18,15 +16,18 @@ class TokenSequence
     private array $tokenIndicesToIgnore = [];
 
     /** @param PhpToken[] $tokens */
-    private function __construct(private array $tokens)
+    private function __construct(
+        private array  $tokens,
+        private string $asCode
+    )
     {
-        $this->asCode = join(' ', $tokens);
     }
 
     /** @param PhpToken[] $tokens */
     public static function create(array $tokens): self
     {
-        return new self($tokens);
+        $asCode = join(' ', $tokens);
+        return new self($tokens, $asCode);
     }
 
     /** @return PhpToken[] */
