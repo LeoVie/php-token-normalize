@@ -15,10 +15,11 @@ class TokenSequence
     /** @var int[] */
     private array $tokenIndicesToIgnore = [];
 
+    private string $asCode = '';
+
     /** @param PhpToken[] $tokens */
     private function __construct(
-        private array  $tokens,
-        private string $asCode
+        private array $tokens,
     )
     {
     }
@@ -26,8 +27,7 @@ class TokenSequence
     /** @param PhpToken[] $tokens */
     public static function create(array $tokens): self
     {
-        $asCode = join(' ', $tokens);
-        return new self($tokens, $asCode);
+        return new self($tokens);
     }
 
     /** @return PhpToken[] */
@@ -170,6 +170,10 @@ class TokenSequence
 
     public function toCode(): string
     {
+        if ($this->asCode === '') {
+            $this->asCode = join(' ', $this->tokens);
+        }
+
         return $this->asCode;
     }
 }
