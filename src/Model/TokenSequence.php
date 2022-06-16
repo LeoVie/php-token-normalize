@@ -21,7 +21,6 @@ class TokenSequence
         private string $asCode
     )
     {
-        $this->asCode = join(' ', $tokens);
     }
 
     /** @param PhpToken[] $tokens */
