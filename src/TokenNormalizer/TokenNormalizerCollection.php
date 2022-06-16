@@ -33,11 +33,10 @@ class TokenNormalizerCollection
 
     /**
      * @throws NoMatchingTokenNormalizerFound
-     * @throws StringsException
      */
     public function findMatching(PhpToken $token): TokenNormalizer
     {
-        if (in_array($token::class, $this->tokenNormalizersSupportMappingCache)) {
+        if (array_key_exists($token::class, $this->tokenNormalizersSupportMappingCache)) {
             return $this->tokenNormalizersSupportMappingCache[$token::class];
         }
 
