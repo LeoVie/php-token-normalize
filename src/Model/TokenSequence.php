@@ -20,7 +20,7 @@ class TokenSequence
     /** @param PhpToken[] $tokens */
     private function __construct(private array $tokens)
     {
-        $this->asCode = join(' ', $this->getTokens());
+        $this->asCode = join(' ', $tokens);
     }
 
     /** @param PhpToken[] $tokens */
