@@ -10,6 +10,9 @@ use Safe\Exceptions\StringsException;
 
 class TokenNormalizerCollection
 {
+    /** @var array<class-string<PhpToken>, TokenNormalizer> */
+    private array $tokenNormalizersSupportMappingCache = [];
+
     /** @param iterable<TokenNormalizer> $tokenNormalizers */
     public function __construct(private iterable $tokenNormalizers)
     {
@@ -34,8 +37,14 @@ class TokenNormalizerCollection
      */
     public function findMatching(PhpToken $token): TokenNormalizer
     {
+        if (in_array($token::class, $this->tokenNormalizersSupportMappingCache)) {
+            return $this->tokenNormalizersSupportMappingCache[$token::class];
+        }
+
         foreach ($this->tokenNormalizers as $tokenNormalizer) {
             if ($tokenNormalizer->supports($token)) {
+                $this->tokenNormalizersSupportMappingCache[$token::class] = $tokenNormalizer;
+
                 return $tokenNormalizer;
             }
         }
