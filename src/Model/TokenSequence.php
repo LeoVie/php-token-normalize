@@ -6,6 +6,8 @@ use PhpToken;
 
 class TokenSequence
 {
+    private string $asCode;
+
     /** @var int[] */
     private array $tokenTypesToIgnore = [];
 
@@ -18,6 +20,7 @@ class TokenSequence
     /** @param PhpToken[] $tokens */
     private function __construct(private array $tokens)
     {
+        $this->asCode = join(' ', $this->getTokens());
     }
 
     /** @param PhpToken[] $tokens */
@@ -166,6 +169,6 @@ class TokenSequence
 
     public function toCode(): string
     {
-        return join(' ', $this->getTokens());
+        return $this->asCode;
     }
 }
