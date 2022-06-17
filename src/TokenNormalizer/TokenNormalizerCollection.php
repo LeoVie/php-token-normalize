@@ -10,7 +10,7 @@ use Safe\Exceptions\StringsException;
 
 class TokenNormalizerCollection
 {
-    /** @var array<class-string<PhpToken>, TokenNormalizer> */
+    /** @var array<int, TokenNormalizer> */
     private array $tokenNormalizersSupportMappingCache = [];
 
     /** @param iterable<TokenNormalizer> $tokenNormalizers */
