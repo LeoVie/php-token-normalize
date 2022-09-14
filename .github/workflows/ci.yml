@@ -35,7 +35,7 @@ jobs:
           extensions: ctype, iconv, mbstring
       - name: "Install requirements"
         run: |
-          composer update --no-interaction --no-progress --ignore-platform-reqs
+          composer update --no-interaction --no-progress
       - name: "Static Analysis"
         run: |
           make build_phpstan_image
