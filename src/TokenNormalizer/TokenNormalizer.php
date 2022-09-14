@@ -9,7 +9,6 @@ use PhpToken;
 interface TokenNormalizer
 {
     public function supports(PhpToken $token): bool;
-    public function reset(): self;
     /** @param PhpToken[] $prevTokens */
     public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken;
 }

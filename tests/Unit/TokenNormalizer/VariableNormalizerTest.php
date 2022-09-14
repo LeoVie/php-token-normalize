@@ -30,12 +30,6 @@ class VariableNormalizerTest extends TestCase
         ];
     }
 
-    public function testReset(): void
-    {
-        $normalizer = new VariableNormalizer();
-        self::assertSame($normalizer, $normalizer->reset());
-    }
-
     /** @dataProvider normalizeProvider */
     public function testNormalize(PhpToken $expected, PhpToken $token): void
     {
@@ -46,11 +40,11 @@ class VariableNormalizerTest extends TestCase
     {
         return [
             [
-                'expected' => new PhpToken(T_VARIABLE, '$x0', 10, 20),
+                'expected' => new PhpToken(T_VARIABLE, '$x', 10, 20),
                 'token' => new PhpToken(T_VARIABLE, '$foo', 10, 20),
             ],
             [
-                'expected' => new PhpToken(T_VARIABLE, '$x0', 199, 71),
+                'expected' => new PhpToken(T_VARIABLE, '$x', 199, 71),
                 'token' => new PhpToken(T_VARIABLE, '$bar', 199, 71),
             ],
         ];

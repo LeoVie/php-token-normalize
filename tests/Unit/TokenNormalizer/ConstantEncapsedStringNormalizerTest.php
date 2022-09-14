@@ -30,11 +30,6 @@ class ConstantEncapsedStringNormalizerTest extends TestCase
         ];
     }
 
-    public function testReset(): void
-    {
-        $normalizer = new ConstantEncapsedStringNormalizer();
-        self::assertSame($normalizer, $normalizer->reset());
-    }
 
     /** @dataProvider normalizeProvider */
     public function testNormalize(PhpToken $expected, PhpToken $token): void

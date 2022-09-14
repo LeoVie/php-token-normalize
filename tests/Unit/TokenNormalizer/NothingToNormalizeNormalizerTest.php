@@ -30,12 +30,6 @@ class NothingToNormalizeNormalizerTest extends TestCase
         ];
     }
 
-    public function testReset(): void
-    {
-        $normalizer = new NothingToNormalizeNormalizer();
-        self::assertSame($normalizer, $normalizer->reset());
-    }
-
     /** @dataProvider normalizeProvider */
     public function testNormalize(PhpToken $token): void
     {

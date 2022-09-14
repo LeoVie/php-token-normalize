@@ -30,8 +30,6 @@ class TokenSequenceNormalizer
 
     public function normalizeLevel2(TokenSequence $tokenSequence): TokenSequence
     {
-        $this->tokenNormalizerCollection->walk(fn(TokenNormalizer $tn) => $tn->reset());
-
         $normalizedTokens = [];
         foreach ($tokenSequence->getTokens() as $token) {
             $normalizedToken = $this->tokenNormalizerCollection->findMatching($token)
