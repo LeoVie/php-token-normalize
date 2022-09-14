@@ -13,6 +13,7 @@ jobs:
         include:
           - { operating-system: 'ubuntu-latest', php-version: '8.0', coverage-driver: 'xdebug'}
           - { operating-system: 'ubuntu-latest', php-version: '8.1', coverage-driver: 'xdebug'}
+          - { operating-system: 'ubuntu-latest', php-version: '8.2', coverage-driver: 'xdebug'}
 
     name: CI on ${{ matrix.operating-system }} with PHP ${{ matrix.php-version }}, using ${{ matrix.coverage-driver }}
 
@@ -38,7 +39,7 @@ jobs:
           composer update --no-interaction --no-progress
       - name: "Static Analysis"
         run: |
-          make build_phpstan_image
+          make build_phpstan_image php_version=${{ matrix.php-version }}
           make phpstan
           make psalm
       - name: "Unit Testing"
