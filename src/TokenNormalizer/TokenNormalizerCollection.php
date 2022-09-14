@@ -24,13 +24,6 @@ class TokenNormalizerCollection
         return $this->tokenNormalizers;
     }
 
-    public function walk(callable $fn): void
-    {
-        foreach ($this->tokenNormalizers as $tokenNormalizer) {
-            $fn($tokenNormalizer);
-        }
-    }
-
     /**
      * @throws NoMatchingTokenNormalizerFound
      */

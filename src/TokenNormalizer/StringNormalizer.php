@@ -13,11 +13,6 @@ class StringNormalizer implements TokenNormalizer
         return $token->id === T_STRING;
     }
 
-    public function reset(): self
-    {
-        return $this;
-    }
-
     /** @param PhpToken[] $prevTokens */
     public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken
     {

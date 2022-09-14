@@ -17,11 +17,6 @@ class PlusMinusNormalizer implements TokenNormalizer
         ]);
     }
 
-    public function reset(): self
-    {
-        return $this;
-    }
-
     /** @param PhpToken[] $prevTokens */
     public function normalizeToken(array $prevTokens, PhpToken $token): PhpToken
     {

@@ -33,21 +33,6 @@ class TokenNormalizerCollectionTest extends TestCase
         ];
     }
 
-    public function testWalk(): void
-    {
-        $tokenNormalizers = [
-            $this->createMock(TokenNormalizer::class),
-            $this->createMock(TokenNormalizer::class),
-        ];
-        foreach ($tokenNormalizers as $tokenNormalizer) {
-            $tokenNormalizer->expects(self::once())->method('reset');
-        }
-
-        (new TokenNormalizerCollection($tokenNormalizers))->walk(
-            fn(TokenNormalizer $tn) => $tn->reset()
-        );
-    }
-
     /** @dataProvider findMatchingProvider */
     public function testFindMatching(TokenNormalizer $expected, array $tokenNormalizers, \PhpToken $token): void
     {

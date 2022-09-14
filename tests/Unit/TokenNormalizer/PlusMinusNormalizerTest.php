@@ -31,12 +31,6 @@ class PlusMinusNormalizerTest extends TestCase
         ];
     }
 
-    public function testReset(): void
-    {
-        $normalizer = new PlusMinusNormalizer();
-        self::assertSame($normalizer, $normalizer->reset());
-    }
-
     /** @dataProvider normalizeProvider */
     public function testNormalize(PhpToken $expected, array $prevTokens, PhpToken $token): void
     {
